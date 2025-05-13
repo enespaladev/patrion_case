@@ -3,25 +3,29 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { User } from '../user/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { UserRepository } from '../user/user.repository';
+import { CreateUserDto } from '../user/create-user.dto'; // CreateUserDto'yu import edin
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    @InjectRepository(UserRepository)
+    // @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
-  ) {}
+  ) { }
 
-  async register(email: string, password: string, username: string) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.userRepository.createUser({
-      email,
-      password: hashedPassword,
-      username,
-    });
-    return user;
+  // async register(email: string, password: string, username: string) {
+  //   const hashedPassword = await bcrypt.hash(password, 10);
+  //   const user = await this.userRepository.createUser({
+  //     email,
+  //     password: hashedPassword,
+  //     username,
+  //   });
+  //   return user;
+  // }
+
+  async register(createUserDto: CreateUserDto): Promise<User> {
+    return this.userRepository.createUser(createUserDto); // ✅ artık çalışır
   }
 
   async login(email: string, password: string) {

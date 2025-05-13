@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MqttService } from './mqtt/mqtt.service';
+import { MqttModule } from './mqtt/mqtt.module';
 
 dotenv.config();
 
@@ -30,12 +32,14 @@ console.log('DB_NAME:', process.env.DB_NAME);
       password: process.env.DB_PASSWORD || 'enes123',
       database: process.env.DB_NAME || 'patrion',
       synchronize: true,  // Yalnızca geliştirme aşamasında açın
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       logging: true,      // Hata ayıklamak için
     }),
     UserModule,
     AuthModule,
+    MqttModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MqttService],
 })
 export class AppModule {}
