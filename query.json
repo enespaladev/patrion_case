@@ -1,0 +1,8 @@
+{
+   "query": "from(bucket: \"sensor_bucket\") |> range(start: -1h) |> filter(fn: (r) => r._measurement == \"sensor_data\")",
+   "type": "flux",
+   "dialect": {
+     "annotations": ["group", "datatype", "default"]
+   },
+   "org": "patrion_org"
+}

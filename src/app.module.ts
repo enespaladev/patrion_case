@@ -8,6 +8,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MqttService } from './mqtt/mqtt.service';
 import { MqttModule } from './mqtt/mqtt.module';
+import { InfluxService } from './influx/influx.service';
+import { InfluxModule } from './influx/influx.module';
 
 dotenv.config();
 
@@ -38,8 +40,9 @@ console.log('DB_NAME:', process.env.DB_NAME);
     UserModule,
     AuthModule,
     MqttModule,
+    InfluxModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MqttService],
+  providers: [AppService, MqttService, InfluxService],
 })
 export class AppModule {}

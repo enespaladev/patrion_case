@@ -15,6 +15,8 @@ services:
     command: ["dockerize", "-wait", "tcp://postgres:5432", "-timeout", "30s", "npm", "run", "start:prod"]
     depends_on:
       - postgres
+    networks:
+      - my_network
 
   postgres:
     image: postgres:15
@@ -28,6 +30,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks: 
+      - my_network
 
   influxdb:
     image: influxdb:2.7
@@ -41,9 +45,11 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
       - DOCKER_INFLUXDB_INIT_ORG=patrion_org
       - DOCKER_INFLUXDB_INIT_BUCKET=sensor_bucket
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=patrion-token
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=lq1AJFX4UCP0Qh9riRcUP2snIfl35-_ujeTt7gMaaec3kC0U6eWZ-3E_vHLjKuk9vx0J1lgsfgSzmmqPZ2T1vA==
     volumes:
       - influxdb_data:/var/lib/influxdb2
+    networks:
+      - my_network
 
   mosquitto:
     image: eclipse-mosquitto:2
@@ -56,6 +62,8 @@ services:
       - ./mosquitto/config:/mosquitto/config
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
+    networks:
+      - my_network
 
   pgadmin:
     image: dpage/pgadmin4
@@ -66,7 +74,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin123
     ports:
       - "5050:80"
+    networks:
+      - my_network
 
 volumes:
   postgres_data:
   influxdb_data:
+
+networks:
+  my_network:
+    driver: bridge
